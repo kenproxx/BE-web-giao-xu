@@ -13,4 +13,5 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
     @Query(value = "SELECT * FROM post_entity ORDER BY created_date DESC LIMIT 1", nativeQuery = true)
     PostEntity getNewPost();
 
+
 }

@@ -68,7 +68,16 @@ public class PostService {
         postEntity.setUpdatedBy(username);
         postRepository.save(postEntity);
     }
-    
+
+    public void editPost(PostEntity postEntity) {
+        Date now = new Date();
+        postEntity.setUpdatedDate(now);
+        postRepository.save(postEntity);
+    }
+
+    public PostEntity getById(Long id) {
+        return postRepository.getOne(id);
+    }
 
 
 }

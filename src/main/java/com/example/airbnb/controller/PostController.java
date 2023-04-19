@@ -47,4 +47,19 @@ public class PostController {
         postService.changeStatusPost(id, username);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PutMapping("/edit-post")
+    public ResponseEntity<PostEntity> editPost(@RequestBody PostEntity postEntity) {
+        postService.editPost(postEntity);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping()
+    public ResponseEntity<PostEntity> getById(@RequestParam Long id) {
+        PostEntity postEntity = postService.getById(id);
+        if (postEntity == null) {
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(postEntity, HttpStatus.OK);
+    }
 }

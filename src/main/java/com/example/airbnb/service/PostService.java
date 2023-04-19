@@ -4,14 +4,11 @@ import com.example.airbnb.dto.PostDto;
 import com.example.airbnb.model.PostEntity;
 import com.example.airbnb.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 
 @Service
 public class PostService {

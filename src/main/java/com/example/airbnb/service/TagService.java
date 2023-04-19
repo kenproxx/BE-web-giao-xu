@@ -45,4 +45,23 @@ public class TagService {
 
         return new ResponseEntity<>(tagEntity, HttpStatus.OK);
     }
+
+    public ResponseEntity<TagEntity> editTag(TagEntity tagEntity) {
+        List<String> listKeyTag = listKeyTag();
+        String keyName = tagEntity.getKeyName();
+
+        boolean isKeyTag = listKeyTag.stream().anyMatch(key -> key.equals(keyName));
+        if (isKeyTag) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Date now = new Date();
+        tagEntity.setUpdatedDate(now);
+        String createdBy = tagEntity.getCreatedBy();
+        String value = createdBy + " đã sửa Tag: ";
+
+        tagRepository.save(tagEntity);
+        logService.writeLog(createdBy, value);
+
+        return new ResponseEntity<>(tagEntity, HttpStatus.OK);
+    }
 }

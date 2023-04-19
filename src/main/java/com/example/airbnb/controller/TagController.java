@@ -21,4 +21,8 @@ public class TagController {
     public ResponseEntity<TagEntity> createTag(@RequestBody TagEntity tagEntity) {
         return tagService.createNewTag(tagEntity);
     }
+    @PostMapping("/edit")
+    public ResponseEntity<TagEntity> editTag(@RequestBody TagEntity tagEntity) {
+        return tagService.editTag(tagEntity);
+    }
 }

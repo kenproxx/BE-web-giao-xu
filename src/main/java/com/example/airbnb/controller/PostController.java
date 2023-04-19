@@ -41,4 +41,10 @@ public class PostController {
         postService.createPost(postDto);
         return new ResponseEntity<>(postDto, HttpStatus.CREATED);
     }
+
+    @PutMapping("/change-status")
+    public ResponseEntity<PostEntity> changeStatus(@RequestParam Long id, @RequestParam String username) {
+        postService.changeStatusPost(id, username);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

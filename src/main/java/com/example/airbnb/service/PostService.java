@@ -58,6 +58,16 @@ public class PostService {
         });
         return listPost;
     }
+
+    public void changeStatusPost(Long id, String username) {
+        PostEntity postEntity = postRepository.getOne(id);
+        boolean newStatus = !postEntity.isStatus();
+        Date now = new Date();
+        postEntity.setStatus(newStatus);
+        postEntity.setUpdatedDate(now);
+        postEntity.setUpdatedBy(username);
+        postRepository.save(postEntity);
+    }
     
 
 

@@ -15,11 +15,30 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-
-
-    @GetMapping
-    public ResponseEntity<Iterable<PostEntity>> findAll(@RequestParam int page) {
+    @GetMapping("/all")
+    public ResponseEntity<Iterable<PostEntity>> findAll(@RequestParam(required = false) Integer page) {
+        if (page == null) {
+            page = 0;
+        }
         Iterable<PostEntity> listPost = postService.findAll(page);
         return new ResponseEntity<>(listPost, HttpStatus.OK);
+    }
+
+    @GetMapping("/newest")
+    public ResponseEntity<PostEntity> getNewPost() {
+        PostEntity postEntity = postService.getNewPost();
+        return new ResponseEntity<>(postEntity, HttpStatus.OK);
+    }
+
+    @GetMapping("/find-by-tag")
+    public ResponseEntity<Iterable<PostEntity>> getListPostByTagId(@RequestParam Long tagId) {
+        Iterable<PostEntity> listPost = postService.getListPostByTagId(tagId);
+        return new ResponseEntity<>(listPost, HttpStatus.OK);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
+        postService.createPost(postDto);
+        return new ResponseEntity<>(postDto, HttpStatus.CREATED);
     }
 }

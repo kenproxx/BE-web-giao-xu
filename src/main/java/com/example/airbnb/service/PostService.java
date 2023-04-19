@@ -16,7 +16,8 @@ public class PostService {
     private PostRepository postRepository;
 
     public Iterable<PostEntity> findAll(int page) {
-        PageRequest pageRequest = PageRequest.of(page, 5);
+        int pageSize = 6;
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
         return postRepository.findAll(pageRequest);
     }
 
@@ -29,4 +30,6 @@ public class PostService {
         postEntity.setCreatedDate(new Date());
         postRepository.save(postEntity);
     }
+
+
 }

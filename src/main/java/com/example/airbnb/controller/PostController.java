@@ -6,10 +6,7 @@ import com.example.airbnb.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("*")
@@ -18,9 +15,11 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    @PostMapping("/create")
-    public ResponseEntity<PostDto> createPost(PostDto postDto) {
-        postService.createPost(postDto);
-        return new ResponseEntity<>(postDto, HttpStatus.CREATED);
+
+
+    @GetMapping
+    public ResponseEntity<Iterable<PostEntity>> findAll(@RequestParam int page) {
+        Iterable<PostEntity> listPost = postService.findAll(page);
+        return new ResponseEntity<>(listPost, HttpStatus.OK);
     }
 }

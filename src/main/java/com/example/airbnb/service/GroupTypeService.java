@@ -20,4 +20,6 @@ public class GroupTypeService {
         groupTypes.forEach(s -> listPostId.add(s.getPostId()));
         return listPostId;
     }
+
+
 }

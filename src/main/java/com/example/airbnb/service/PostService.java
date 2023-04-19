@@ -21,6 +21,9 @@ public class PostService {
     @Autowired
     private GroupTypeService groupTypeService;
 
+    @Autowired
+    private LogService logService;
+
     public Iterable<PostEntity> findAll(int page) {
         int pageSize = 6;
         PageRequest pageRequest = PageRequest.of(page, pageSize);
@@ -29,13 +32,20 @@ public class PostService {
 
     public void createPost(PostDto postDto) {
         PostEntity postEntity = new PostEntity();
-        System.out.println(postDto);
-        postEntity.setContent(postDto.getContent());
-        postEntity.setTitle(postDto.getTitle());
-        postEntity.setCreatedBy(postDto.getCreatedBy());
-        postEntity.setStatus(postDto.isStatus());
-        postEntity.setCreatedDate(new Date());
+        String content = postDto.getContent();
+        String title = postDto.getTitle();
+        String createdBy = postDto.getCreatedBy();
+        boolean status = postDto.isStatus();
+        Date now = new Date();
+        postEntity.setContent(content);
+        postEntity.setTitle(title);
+        postEntity.setCreatedBy(createdBy);
+        postEntity.setStatus(status);
+        postEntity.setCreatedDate(now);
         postRepository.save(postEntity);
+
+        String value = createdBy + " đã tạo mới bài viết: " + title;
+        logService.writeLog(createdBy, value);
     }
 
     public PostEntity getNewPost() {

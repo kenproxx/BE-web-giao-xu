@@ -1,6 +1,8 @@
 package com.example.airbnb.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,4 +22,10 @@ public class LogEntity {
     private Date createdDate;
 
     private String createdBy;
+
+    public LogEntity(String value, Date now, String createdBy) {
+        this.value = value;
+        this.createdDate = now;
+        this.createdBy = createdBy;
+    }
 }

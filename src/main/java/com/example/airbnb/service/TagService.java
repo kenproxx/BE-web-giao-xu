@@ -8,11 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 @Service
 public class TagService {
+    @Autowired
+    private LogService logService;
 
     @Autowired
     private TagRepository tagRepository;
@@ -30,7 +33,16 @@ public class TagService {
         if (isKeyTag) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
+        Date now = new Date();
+        tagEntity.setCreatedDate(now);
+        String tagName = tagEntity.getKeyName();
+        String createdBy = tagEntity.getCreatedBy();
+        String value = createdBy + " đã tạo mới Tag: " + tagName;
+
         tagRepository.save(tagEntity);
+        logService.writeLog(createdBy, value);
+
         return new ResponseEntity<>(tagEntity, HttpStatus.OK);
     }
 }

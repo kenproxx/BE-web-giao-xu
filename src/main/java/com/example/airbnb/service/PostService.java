@@ -24,7 +24,9 @@ public class PostService {
     public Iterable<PostEntity> findAll(int page) {
         int pageSize = 6;
         PageRequest pageRequest = PageRequest.of(page, pageSize);
-        return postRepository.findAll(pageRequest);
+        int pageBegin = (page - 1) * pageSize + 1;
+        int pageEnd = (page * pageSize) + pageSize;
+        return postRepository.getListPostEnable(pageBegin, pageEnd);
     }
 
     public void createPost(PostDto postDto) {

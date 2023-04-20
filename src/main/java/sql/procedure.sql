@@ -22,3 +22,13 @@ begin
 SELECT * FROM post_entity WHERE status = true ORDER BY created_date DESC LIMIT 1;
 end //
 delimiter ;
+
+
+delimiter //
+create procedure get_post_by_id(
+    id long
+)
+begin
+    SELECT * FROM post_entity pe WHERE status = true AND pe.id = id;
+end //
+delimiter ;

@@ -26,10 +26,8 @@ public class TagService {
     }
 
     public ResponseEntity<TagEntity> createNewTag(TagEntity tagEntity) {
-        List<String> listKeyTag = listKeyTag();
-        String keyName = tagEntity.getKeyName();
-        boolean isKeyTag = listKeyTag.stream().anyMatch(key -> key.equals(keyName));
-        if (isKeyTag) {
+
+        if (isExistTag(tagEntity)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -45,14 +43,22 @@ public class TagService {
         return new ResponseEntity<>(tagEntity, HttpStatus.OK);
     }
 
-    public ResponseEntity<TagEntity> editTag(TagEntity tagEntity) {
+    public boolean isExistTag(TagEntity tagEntity) {
         List<String> listKeyTag = listKeyTag();
         String keyName = tagEntity.getKeyName();
+        return listKeyTag.stream().anyMatch(key -> key.equals(keyName));
 
-        boolean isKeyTag = listKeyTag.stream().anyMatch(key -> key.equals(keyName));
-        if (isKeyTag) {
+        //nếu đã tồn tại Tag ====> return True
+
+    }
+
+    public ResponseEntity<TagEntity> editTag(TagEntity tagEntity) {
+
+
+        if (isExistTag(tagEntity)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
         Date now = new Date();
         tagEntity.setUpdatedDate(now);
         String createdBy = tagEntity.getCreatedBy();

@@ -25,7 +25,7 @@ public class TagService {
         return listKeyTag;
     }
 
-    public ResponseEntity<TagEntity> createNewTag(TagEntity tagEntity) {
+    public ResponseEntity<TagEntity> createNewTag(TagEntity tagEntity, String createdBy) {
 
         if (isExistTag(tagEntity)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -34,7 +34,7 @@ public class TagService {
         Date now = new Date();
         tagEntity.setCreatedDate(now);
         String tagName = tagEntity.getKeyName();
-        String createdBy = tagEntity.getCreatedBy();
+        tagEntity.setCreatedBy(createdBy);
         String value = createdBy + " đã tạo mới Tag: " + tagName;
 
         tagRepository.save(tagEntity);
@@ -52,7 +52,7 @@ public class TagService {
 
     }
 
-    public ResponseEntity<TagEntity> editTag(TagEntity tagEntity) {
+    public ResponseEntity<TagEntity> editTag(TagEntity tagEntity, String updatedBy) {
 
 
         if (isExistTag(tagEntity)) {
@@ -61,11 +61,11 @@ public class TagService {
 
         Date now = new Date();
         tagEntity.setUpdatedDate(now);
-        String createdBy = tagEntity.getCreatedBy();
-        String value = createdBy + " đã sửa Tag: ";
+        tagEntity.setUpdatedBy(updatedBy);
+        String value = updatedBy + " đã sửa Tag: ";
 
         tagRepository.save(tagEntity);
-        logService.writeLog(createdBy, value);
+        logService.writeLog(updatedBy, value);
 
         return new ResponseEntity<>(tagEntity, HttpStatus.OK);
     }

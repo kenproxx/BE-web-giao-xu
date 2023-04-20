@@ -10,7 +10,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,7 +49,7 @@ public class PostService {
         String content = postDto.getContent();
         String title = postDto.getTitle();
         boolean status = postDto.isStatus();
-        Date now = new Date();
+        LocalDateTime now = LocalDateTime.now();
         postEntity.setContent(content);
         postEntity.setTitle(title);
         postEntity.setCreatedBy(createdBy);
@@ -77,7 +80,7 @@ public class PostService {
     public void changeStatusPost(Long id, String updatedBy) {
         PostEntity postEntity = postRepository.getOne(id);
         boolean newStatus = !postEntity.isStatus();
-        Date now = new Date();
+        LocalDateTime now = LocalDateTime.now();
         postEntity.setStatus(newStatus);
         postEntity.setUpdatedDate(now);
         postEntity.setUpdatedBy(updatedBy);
@@ -90,7 +93,7 @@ public class PostService {
     }
 
     public void editPost(PostEntity postEntity, String updatedBy) {
-        Date now = new Date();
+        LocalDateTime now = LocalDateTime.now();
         postEntity.setUpdatedDate(now);
         postEntity.setUpdatedBy(updatedBy);
         postRepository.save(postEntity);

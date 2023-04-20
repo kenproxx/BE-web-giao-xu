@@ -21,7 +21,9 @@ public class GroupTypeService {
         return listPostId;
     }
 
-
+    public List<Object> getCountByTagId() {
+       return groupTypeRepository.getCountByTagId();
+    }
 
 
 }

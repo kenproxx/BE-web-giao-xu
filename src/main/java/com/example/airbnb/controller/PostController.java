@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/posts")
@@ -16,11 +18,11 @@ public class PostController {
     private PostService postService;
 
     @GetMapping("/all")
-    public ResponseEntity<Iterable<PostEntity>> findAll(@RequestParam(required = false) Integer page) {
+    public ResponseEntity<List> findAll(@RequestParam(required = false) Integer page) {
         if (page == null) {
-            page = 0;
+            page = 1;
         }
-        Iterable<PostEntity> listPost = postService.findAll(page);
+        List listPost = postService.findAll(page);
         return new ResponseEntity<>(listPost, HttpStatus.OK);
     }
 

@@ -4,11 +4,15 @@ import com.example.airbnb.dto.PostDto;
 import com.example.airbnb.model.PostEntity;
 import com.example.airbnb.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.ParameterMode;
+import javax.persistence.PersistenceContext;
+import javax.persistence.StoredProcedureQuery;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 @Service
 public class PostService {
@@ -21,13 +25,21 @@ public class PostService {
     @Autowired
     private LogService logService;
 
-    public Iterable<PostEntity> findAll(int page) {
+    @PersistenceContext
+    private EntityManager entityManager;
+    public List findAll(int page) {
         int pageSize = 6;
-        PageRequest pageRequest = PageRequest.of(page, pageSize);
-        int pageBegin = (page - 1) * pageSize + 1;
-        int pageEnd = (page * pageSize) + pageSize;
-        return postRepository.getListPostEnable(pageBegin, pageEnd);
+
+        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("find_post_paging", PostEntity.class);
+        query.registerStoredProcedureParameter("page", Integer.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("pageSize", Integer.class, ParameterMode.IN);
+        query.setParameter("page", page);
+        query.setParameter("pageSize", pageSize);
+        query.execute();
+        return query.getResultList();
     }
+
+
 
     public void createPost(PostDto postDto) {
         PostEntity postEntity = new PostEntity();

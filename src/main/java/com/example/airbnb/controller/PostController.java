@@ -1,6 +1,5 @@
 package com.example.airbnb.controller;
 
-import com.example.airbnb.dto.PostDto;
 import com.example.airbnb.model.PostEntity;
 import com.example.airbnb.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;

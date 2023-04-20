@@ -25,7 +25,7 @@ public class AdminController {
 
     @PostMapping("/create")
     public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto, HttpServletRequest request) {
-        String username = jwtAuthenticationFilter.getJwtFromRequestCustom(request);
+        String username = jwtAuthenticationFilter.getUsernameFromJwt(request);
         postService.createPost(postDto, username);
         return new ResponseEntity<>(postDto, HttpStatus.CREATED);
     }
@@ -41,14 +41,14 @@ public class AdminController {
 
     @PutMapping("/change-status")
     public ResponseEntity<PostEntity> changeStatus(@RequestParam Long id, HttpServletRequest request) {
-        String username = jwtAuthenticationFilter.getJwtFromRequestCustom(request);
+        String username = jwtAuthenticationFilter.getUsernameFromJwt(request);
         postService.changeStatusPost(id, username);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/edit-post")
     public ResponseEntity<PostEntity> editPost(@RequestBody PostEntity postEntity, HttpServletRequest request) {
-        String username = jwtAuthenticationFilter.getJwtFromRequestCustom(request);
+        String username = jwtAuthenticationFilter.getUsernameFromJwt(request);
         postService.editPost(postEntity, username);
         return new ResponseEntity<>(postEntity, HttpStatus.OK);
     }

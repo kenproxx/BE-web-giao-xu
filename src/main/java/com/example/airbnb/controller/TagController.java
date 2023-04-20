@@ -21,12 +21,12 @@ public class TagController {
 
     @PostMapping("/add")
     public ResponseEntity<TagEntity> createTag(@RequestBody TagEntity tagEntity, HttpServletRequest request) {
-        String username = jwtAuthenticationFilter.getJwtFromRequestCustom(request);
+        String username = jwtAuthenticationFilter.getUsernameFromJwt(request);
         return tagService.createNewTag(tagEntity, username);
     }
     @PostMapping("/edit")
     public ResponseEntity<TagEntity> editTag(@RequestBody TagEntity tagEntity, HttpServletRequest request) {
-        String username = jwtAuthenticationFilter.getJwtFromRequestCustom(request);
+        String username = jwtAuthenticationFilter.getUsernameFromJwt(request);
         return tagService.editTag(tagEntity, username);
     }
 }

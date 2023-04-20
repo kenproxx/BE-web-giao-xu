@@ -54,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		return null;
 	}
-	public String getJwtFromRequestCustom(HttpServletRequest request) {
+	public String getUsernameFromJwt(HttpServletRequest request) {
 		String jwt = getJwtFromRequest(request);
 		if (jwt != null && jwtService.validateJwtToken(jwt)) {
 			return jwtService.getUserNameFromJwtToken(jwt);

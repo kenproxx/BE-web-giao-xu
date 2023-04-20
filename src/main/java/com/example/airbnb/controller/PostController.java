@@ -38,24 +38,6 @@ public class PostController {
         return new ResponseEntity<>(listPost, HttpStatus.OK);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
-        postService.createPost(postDto);
-        return new ResponseEntity<>(postDto, HttpStatus.CREATED);
-    }
-
-    @PutMapping("/change-status")
-    public ResponseEntity<PostEntity> changeStatus(@RequestParam Long id, @RequestParam String username) {
-        postService.changeStatusPost(id, username);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PutMapping("/edit-post")
-    public ResponseEntity<PostEntity> editPost(@RequestBody PostEntity postEntity) {
-        postService.editPost(postEntity);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @GetMapping()
     public ResponseEntity<PostEntity> getById(@RequestParam Long id) {
         PostEntity postEntity = postService.getByIdOfUser(id);

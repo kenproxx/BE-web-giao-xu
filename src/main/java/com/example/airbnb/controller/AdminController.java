@@ -17,7 +17,7 @@ public class AdminController {
     private PostService postService;
 
     @PostMapping("/create")
-    public ResponseEntity<PostDto> createPost(PostDto postDto) {
+    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
         postService.createPost(postDto);
         return new ResponseEntity<>(postDto, HttpStatus.CREATED);
     }
@@ -29,5 +29,17 @@ public class AdminController {
             return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(postEntity, HttpStatus.OK);
+    }
+
+    @PutMapping("/change-status")
+    public ResponseEntity<PostEntity> changeStatus(@RequestParam Long id, @RequestParam String username) {
+        postService.changeStatusPost(id, username);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/edit-post")
+    public ResponseEntity<PostEntity> editPost(@RequestBody PostEntity postEntity) {
+        postService.editPost(postEntity);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -41,11 +41,10 @@ public class PostService {
 
 
 
-    public void createPost(PostDto postDto) {
+    public void createPost(PostDto postDto, String createdBy) {
         PostEntity postEntity = new PostEntity();
         String content = postDto.getContent();
         String title = postDto.getTitle();
-        String createdBy = postDto.getCreatedBy();
         boolean status = postDto.isStatus();
         Date now = new Date();
         postEntity.setContent(content);
@@ -75,28 +74,28 @@ public class PostService {
         return listPost;
     }
 
-    public void changeStatusPost(Long id, String username) {
+    public void changeStatusPost(Long id, String updatedBy) {
         PostEntity postEntity = postRepository.getOne(id);
         boolean newStatus = !postEntity.isStatus();
         Date now = new Date();
         postEntity.setStatus(newStatus);
         postEntity.setUpdatedDate(now);
-        postEntity.setUpdatedBy(username);
+        postEntity.setUpdatedBy(updatedBy);
         postRepository.save(postEntity);
 
         String title = postEntity.getTitle();
 
-        String value = username + " đã thay đổi trạng thái bài viết: " + title;
-        logService.writeLog(username, value);
+        String value = updatedBy + " đã thay đổi trạng thái bài viết: " + title;
+        logService.writeLog(updatedBy, value);
     }
 
-    public void editPost(PostEntity postEntity) {
+    public void editPost(PostEntity postEntity, String updatedBy) {
         Date now = new Date();
         postEntity.setUpdatedDate(now);
+        postEntity.setUpdatedBy(updatedBy);
         postRepository.save(postEntity);
 
         String title = postEntity.getTitle();
-        String updatedBy = postEntity.getUpdatedBy();
 
         String value = updatedBy + " đã sửa bài viết: " + title;
         logService.writeLog(updatedBy, value);

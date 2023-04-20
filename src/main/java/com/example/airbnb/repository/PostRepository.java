@@ -12,7 +12,4 @@ import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
-
-    @Query(value = "SELECT * FROM post_entity WHERE status = true ORDER BY created_date DESC LIMIT 1", nativeQuery = true)
-    PostEntity getNewPost();
 }

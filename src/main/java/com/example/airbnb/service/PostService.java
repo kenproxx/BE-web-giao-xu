@@ -60,7 +60,9 @@ public class PostService {
     }
 
     public PostEntity getNewPost() {
-        return postRepository.getNewPost();
+        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("get_newest_post", PostEntity.class);
+        query.execute();
+        return (PostEntity) query.getSingleResult();
     }
 
     public Iterable<PostEntity> getListPostByTagId(Long tagId) {

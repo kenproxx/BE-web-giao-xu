@@ -58,7 +58,7 @@ public class PostController {
 
     @GetMapping()
     public ResponseEntity<PostEntity> getById(@RequestParam Long id) {
-        PostEntity postEntity = postService.getById(id);
+        PostEntity postEntity = postService.getByIdOfUser(id);
         if (postEntity == null) {
             return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
         }

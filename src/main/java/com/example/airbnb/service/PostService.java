@@ -91,8 +91,19 @@ public class PostService {
         postRepository.save(postEntity);
     }
 
-    public PostEntity getById(Long id) {
-        return postRepository.getOne(id);
+    public PostEntity getByIdOfUser(Long id) {
+        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("get_post_by_id_of_user", PostEntity.class);
+        query.registerStoredProcedureParameter("id", Long.class, ParameterMode.IN);
+        query.setParameter("id", id);
+        query.execute();
+        return (PostEntity) query.getSingleResult();
+    }
+    public PostEntity getByIdOfAdmin(Long id) {
+        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("get_post_by_id_of_admin", PostEntity.class);
+        query.registerStoredProcedureParameter("id", Long.class, ParameterMode.IN);
+        query.setParameter("id", id);
+        query.execute();
+        return (PostEntity) query.getSingleResult();
     }
 
 

@@ -25,10 +25,19 @@ delimiter ;
 
 
 delimiter //
-create procedure get_post_by_id(
+create procedure get_post_by_id_of_user(
     id long
 )
 begin
     SELECT * FROM post_entity pe WHERE status = true AND pe.id = id;
+end //
+delimiter ;
+
+delimiter //
+create procedure get_post_by_id_of_admin(
+    id long
+)
+begin
+    SELECT * FROM post_entity pe WHERE pe.id = id;
 end //
 delimiter ;

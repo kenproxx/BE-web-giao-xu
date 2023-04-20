@@ -94,6 +94,12 @@ public class PostService {
         Date now = new Date();
         postEntity.setUpdatedDate(now);
         postRepository.save(postEntity);
+
+        String title = postEntity.getTitle();
+        String updatedBy = postEntity.getUpdatedBy();
+
+        String value = updatedBy + " đã sửa bài viết: " + title;
+        logService.writeLog(updatedBy, value);
     }
 
     public PostEntity getByIdOfUser(Long id) {

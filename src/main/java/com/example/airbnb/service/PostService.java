@@ -83,6 +83,11 @@ public class PostService {
         postEntity.setUpdatedDate(now);
         postEntity.setUpdatedBy(username);
         postRepository.save(postEntity);
+
+        String title = postEntity.getTitle();
+
+        String value = username + " đã thay đổi trạng thái bài viết: " + title;
+        logService.writeLog(username, value);
     }
 
     public void editPost(PostEntity postEntity) {

@@ -1,4 +1,5 @@
-use
+
+    INSERT INTO role (name) VALUES ('ROLE_ADMIN');
 
     alter table post_entity
     modify content long null;

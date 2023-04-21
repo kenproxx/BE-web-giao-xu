@@ -32,8 +32,8 @@ public class PostController {
     }
 
     @GetMapping("/find-by-tag")
-    public ResponseEntity<Iterable<PostEntity>> getListPostByTagId(@RequestParam Long tagId) {
-        Iterable<PostEntity> listPost = postService.getListPostByTagId(tagId);
+    public ResponseEntity<List<PostEntity>> getListPostByTagId(@RequestParam Long tagId, @RequestParam Integer page) {
+        List listPost = postService.getListPostByTagId(tagId, page);
         return new ResponseEntity<>(listPost, HttpStatus.OK);
     }
 

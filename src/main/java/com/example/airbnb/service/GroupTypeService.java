@@ -14,12 +14,6 @@ public class GroupTypeService {
     @Autowired
     private GroupTypeRepository groupTypeRepository;
 
-    public LinkedList<Long> getListPostIdByTagId(Long tagId) {
-        List<GroupType> groupTypes = groupTypeRepository.findAllByHashTagId(tagId);
-        LinkedList<Long> listPostId = new LinkedList<>();
-        groupTypes.forEach(s -> listPostId.add(s.getPostId()));
-        return listPostId;
-    }
 
     public List<Object> getCountByTagId() {
        return groupTypeRepository.getCountByTagId();

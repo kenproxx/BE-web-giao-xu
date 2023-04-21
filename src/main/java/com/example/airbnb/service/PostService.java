@@ -10,11 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -67,16 +63,6 @@ public class PostService {
         return (PostEntity) query.getSingleResult();
     }
 
-    public Iterable<PostEntity> getListPostByTagId(Long tagId) {
-        LinkedList<Long> lists = groupTypeService.getListPostIdByTagId(tagId);
-        LinkedList<PostEntity> listPost = new LinkedList<>();
-        lists.forEach(item -> {
-            PostEntity postEntity = postRepository.getOne(item);
-            listPost.add(postEntity);
-        });
-        return listPost;
-    }
-
     public void changeStatusPost(Long id, String updatedBy) {
         PostEntity postEntity = postRepository.getOne(id);
         boolean newStatus = !postEntity.isStatus();
@@ -111,12 +97,26 @@ public class PostService {
         query.execute();
         return (PostEntity) query.getSingleResult();
     }
+
     public PostEntity getByIdOfAdmin(Long id) {
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("get_post_by_id_of_admin", PostEntity.class);
         query.registerStoredProcedureParameter("id", Long.class, ParameterMode.IN);
         query.setParameter("id", id);
         query.execute();
         return (PostEntity) query.getSingleResult();
+    }
+
+    public List getListPostByTagId(Long id, Integer page) {
+        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("get_list_post_by_tag_id", PostEntity.class);
+        int pageSize = 6;
+        query.registerStoredProcedureParameter("tagId", Long.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("page", Integer.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("pageSize", Integer.class, ParameterMode.IN);
+        query.setParameter("tagId", id);
+        query.setParameter("page", page);
+        query.setParameter("pageSize", pageSize);
+        query.execute();
+        return query.getResultList();
     }
 
 

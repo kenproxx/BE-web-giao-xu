@@ -41,3 +41,23 @@ begin
     SELECT * FROM post_entity pe WHERE pe.id = id;
 end //
 delimiter ;
+
+
+delimiter //
+create procedure get_list_post_by_tag_id(
+    tagId long,
+    page int,
+    pageSize int
+)
+begin
+    SELECT id, content, created_by, created_date, status, thumbnail_img, title, updated_by, updated_date
+    FROM (SELECT pe.id, content, created_by, created_date, status, thumbnail_img, title, updated_by, updated_date, ROW_NUMBER() over () as rn
+          FROM group_type gt
+                   join post_entity pe on gt.post_id = pe.id
+          where status = true and hash_tag_id = tagId
+          group by gt.post_id
+          order by created_date desc) as subquery
+    WHERE rn between ((page - 1) * pageSize + 1) and (((page - 1) * pageSize) + pageSize);
+end //
+delimiter ;
+

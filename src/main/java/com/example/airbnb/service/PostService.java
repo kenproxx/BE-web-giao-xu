@@ -109,6 +109,9 @@ public class PostService {
     public List getListPostByTagId(Long id, Integer page) {
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("get_list_post_by_tag_id", PostEntity.class);
         int pageSize = 6;
+        if (page == null) {
+            page = 1;
+        }
         query.registerStoredProcedureParameter("tagId", Long.class, ParameterMode.IN);
         query.registerStoredProcedureParameter("page", Integer.class, ParameterMode.IN);
         query.registerStoredProcedureParameter("pageSize", Integer.class, ParameterMode.IN);

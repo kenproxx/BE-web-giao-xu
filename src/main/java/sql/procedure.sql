@@ -1,3 +1,9 @@
+use
+
+    alter table post_entity
+    modify content long null;
+
+
 delimiter //
 create procedure find_post_paging(
     page int,

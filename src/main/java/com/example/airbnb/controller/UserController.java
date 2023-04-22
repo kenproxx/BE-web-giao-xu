@@ -28,12 +28,9 @@ import java.util.Set;
 @PropertySource("classpath:application.properties")
 @CrossOrigin("*")
 public class UserController {
-    @Autowired
-    private Environment env;
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
 
     @Autowired
     private JwtService jwtService;
@@ -46,7 +43,6 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
 
     @GetMapping("/users")
     public ResponseEntity<Iterable<User>> showAllUser() {
@@ -100,11 +96,6 @@ public class UserController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User currentUser = userService.findByUsername(user.getUsername());
         return ResponseEntity.ok(new JwtResponse(jwt, currentUser.getId(), userDetails.getUsername(), userDetails.getAuthorities()));
-    }
-
-    @GetMapping("/hello")
-    public ResponseEntity<String> hello(){
-        return new ResponseEntity("Hello World", HttpStatus.OK);
     }
 
     @GetMapping("/users/{id}")

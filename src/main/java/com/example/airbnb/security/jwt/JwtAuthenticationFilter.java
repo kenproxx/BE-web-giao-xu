@@ -54,4 +54,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		return null;
 	}
+	public String getUsernameFromJwt(HttpServletRequest request) {
+		String jwt = getJwtFromRequest(request);
+		if (jwt != null && jwtService.validateJwtToken(jwt)) {
+			return jwtService.getUserNameFromJwtToken(jwt);
+		}
+		return null;
+	}
 }

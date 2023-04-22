@@ -25,9 +25,13 @@ public class TagService {
         return listKeyTag;
     }
 
+    public List<TagEntity> getAll() {
+        return tagRepository.findAll();
+    }
+
     public ResponseEntity<TagEntity> createNewTag(TagEntity tagEntity, String createdBy) {
 
-        if (isExistTag(tagEntity)) {
+        if (isExistTag(tagEntity.getKeyName())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -43,10 +47,8 @@ public class TagService {
         return new ResponseEntity<>(tagEntity, HttpStatus.OK);
     }
 
-    public boolean isExistTag(TagEntity tagEntity) {
-        List<String> listKeyTag = listKeyTag();
-        String keyName = tagEntity.getKeyName();
-        return listKeyTag.stream().anyMatch(key -> key.equals(keyName));
+    public boolean isExistTag(String keyName) {
+        return getAll().stream().anyMatch(key -> key.getKeyName().equals(keyName));
 
         //nếu đã tồn tại Tag ====> return True
 
@@ -55,7 +57,7 @@ public class TagService {
     public ResponseEntity<TagEntity> editTag(TagEntity tagEntity, String updatedBy) {
 
 
-        if (isExistTag(tagEntity)) {
+        if (isExistTag(tagEntity.getKeyName())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 

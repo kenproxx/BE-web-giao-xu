@@ -65,6 +65,23 @@ begin
 end //
 delimiter ;
 
+delimiter //
+create procedure get_all_log(
+    page int,
+    pageSize int
+)
+begin
+SELECT id,
+       created_by,
+       created_date,
+       value
+FROM (SELECT *, ROW_NUMBER() over () as rn
+      FROM log_entity le
+      order by created_date desc) as subquery
+WHERE rn between ((page - 1) * pageSize + 1) and (((page - 1) * pageSize) + pageSize);
+end //
+delimiter ;
+
 
 delimiter //
 create procedure get_post_by_id_of_user(

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -31,12 +32,9 @@ public class AdminController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<PostEntity> getById(@RequestParam Long id) {
-        PostEntity postEntity = postService.getByIdOfAdmin(id);
-        if (postEntity == null) {
-            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(postEntity, HttpStatus.OK);
+    public ResponseEntity<List> getAllOfAdmin(@RequestParam Integer page) {
+        List list = postService.getListPost(page, true);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @PutMapping("/change-status")

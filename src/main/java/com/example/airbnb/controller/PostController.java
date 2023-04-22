@@ -21,7 +21,7 @@ public class PostController {
         if (page == null) {
             page = 1;
         }
-        List listPost = postService.findAll(page);
+        List listPost = postService.getListPost(page, false);
         return new ResponseEntity<>(listPost, HttpStatus.OK);
     }
 

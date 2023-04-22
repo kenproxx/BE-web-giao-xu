@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/admin")
+@RequestMapping("/admin/posts")
 public class AdminController {
 
     @Autowired
@@ -30,7 +30,7 @@ public class AdminController {
         return new ResponseEntity<>(postDto, HttpStatus.CREATED);
     }
 
-    @GetMapping()
+    @GetMapping("/all")
     public ResponseEntity<PostEntity> getById(@RequestParam Long id) {
         PostEntity postEntity = postService.getByIdOfAdmin(id);
         if (postEntity == null) {

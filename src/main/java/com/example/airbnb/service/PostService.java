@@ -27,8 +27,11 @@ public class PostService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List getListPost(int page, boolean isAdmin) {
+    public List getListPost(Integer page, boolean isAdmin) {
         int pageSize = 6;
+        if (page == null) {
+            page = 1;
+        }
         String procedure = isAdmin ? "find_post_paging_admin" : "find_post_paging";
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery(procedure, PostEntity.class);
         query.registerStoredProcedureParameter("page", Integer.class, ParameterMode.IN);

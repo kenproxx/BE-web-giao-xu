@@ -44,11 +44,13 @@ public class PostService {
         PostEntity postEntity = new PostEntity();
         String content = postDto.getContent();
         String title = postDto.getTitle();
+        String thumbnailImg = postDto.getThumbnailImg();
         boolean status = postDto.isStatus();
         LocalDateTime now = LocalDateTime.now();
         postEntity.setContent(content);
         postEntity.setTitle(title);
         postEntity.setCreatedBy(createdBy);
+        postEntity.setThumbnailImg(thumbnailImg);
         postEntity.setStatus(status);
         postEntity.setCreatedDate(now);
         postRepository.save(postEntity);

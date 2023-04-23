@@ -74,9 +74,10 @@ begin
            created_by,
            created_date,
            updated_by,
-               value
+           updated_date,
+           value
     FROM (SELECT *, ROW_NUMBER() over () as rn
-          FROM log_entity le
+          FROM log_entity
           order by created_date desc) as subquery
     WHERE rn between ((page - 1) * pageSize + 1) and (((page - 1) * pageSize) + pageSize);
 

@@ -3,15 +3,10 @@ package com.example.airbnb.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 @Data
 @Entity
-public class PostEntity {
+public class PostEntity extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,12 +19,6 @@ public class PostEntity {
 
     private String thumbnailImg;
 
-    private String createdBy;
 
-    private LocalDateTime createdDate;
-
-    private String updatedBy;
-
-    private LocalDateTime updatedDate;
 
 }

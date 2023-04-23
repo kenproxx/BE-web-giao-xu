@@ -50,8 +50,7 @@ begin
            updated_date
     FROM (SELECT *, ROW_NUMBER() over () as rn
           FROM post_entity
-          where status = true
-            and created_date != (SELECT MAX(created_date) FROM post_entity)
+          where created_date != (SELECT MAX(created_date) FROM post_entity)
           order by created_date desc) as subquery
     WHERE rn between ((page - 1) * pageSize + 1) and (((page - 1) * pageSize) + pageSize);
 end //
@@ -71,14 +70,16 @@ create procedure get_all_log(
     pageSize int
 )
 begin
-SELECT id,
-       created_by,
-       created_date,
-       value
-FROM (SELECT *, ROW_NUMBER() over () as rn
-      FROM log_entity le
-      order by created_date desc) as subquery
-WHERE rn between ((page - 1) * pageSize + 1) and (((page - 1) * pageSize) + pageSize);
+    SELECT id,
+           created_by,
+           created_date,
+           updated_by,
+               value
+    FROM (SELECT *, ROW_NUMBER() over () as rn
+          FROM log_entity le
+          order by created_date desc) as subquery
+    WHERE rn between ((page - 1) * pageSize + 1) and (((page - 1) * pageSize) + pageSize);
+
 end //
 delimiter ;
 

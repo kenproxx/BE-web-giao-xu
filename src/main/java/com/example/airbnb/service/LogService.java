@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class LogService {
     private EntityManager entityManager;
 
     public void writeLog(String createdBy, String value) {
-        Date now = new Date();
+        LocalDateTime now = LocalDateTime.now();
         LogEntity logEntity = new LogEntity(value, now, createdBy);
         logRepository.save(logEntity);
     }

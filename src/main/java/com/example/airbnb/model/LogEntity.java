@@ -1,8 +1,7 @@
 package com.example.airbnb.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +10,7 @@ import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Entity
+@EqualsAndHashCode(callSuper=false)
 @Data
 public class LogEntity extends BaseEntity{
     @Id

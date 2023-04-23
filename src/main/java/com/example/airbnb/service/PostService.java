@@ -70,17 +70,18 @@ public class PostService {
     }
 
     public void changeStatusPost(Long id, String updatedBy) {
-        PostEntity postEntity = postRepository.getOne(id);
-        boolean newStatus = !postEntity.isStatus();
         LocalDateTime now = LocalDateTime.now();
-        postEntity.setStatus(newStatus);
-        postEntity.setUpdatedDate(now);
-        postEntity.setUpdatedBy(updatedBy);
-        postRepository.save(postEntity);
 
-        String title = postEntity.getTitle();
+        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("change_status_post", PostEntity.class);
+        query.registerStoredProcedureParameter("idPost", Long.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("updateBy", String.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("updateDate", LocalDateTime.class, ParameterMode.IN);
+        query.setParameter("idPost", id);
+        query.setParameter("updateBy", updatedBy);
+        query.setParameter("updateDate", now);
+        query.execute();
 
-        String value = updatedBy + " đã thay đổi trạng thái bài viết: " + title;
+        String value = updatedBy + " đã thay đổi trạng thái của bài viết: " + id;
         logService.writeLog(updatedBy, value);
     }
 
@@ -96,16 +97,9 @@ public class PostService {
         logService.writeLog(updatedBy, value);
     }
 
-    public PostEntity getByIdOfUser(Long id) {
-        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("get_post_by_id_of_user", PostEntity.class);
-        query.registerStoredProcedureParameter("id", Long.class, ParameterMode.IN);
-        query.setParameter("id", id);
-        query.execute();
-        return (PostEntity) query.getSingleResult();
-    }
-
-    public PostEntity getByIdOfAdmin(Long id) {
-        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("get_post_by_id_of_admin", PostEntity.class);
+    public PostEntity getById(Long id, boolean isAdmin) {
+        String procedure = isAdmin ? "get_post_by_id_of_admin" : "get_post_by_id_of_user";
+        StoredProcedureQuery query = entityManager.createStoredProcedureQuery(procedure, PostEntity.class);
         query.registerStoredProcedureParameter("id", Long.class, ParameterMode.IN);
         query.setParameter("id", id);
         query.execute();

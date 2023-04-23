@@ -92,6 +92,22 @@ begin
 end //
 delimiter ;
 
+DELIMITER //
+CREATE PROCEDURE change_status_post(
+    idPost LONG,
+    updateBy VARCHAR(255),
+    updateDate DATETIME(6)
+)
+BEGIN
+    UPDATE post_entity
+    SET status = NOT status,
+        updated_by = updateBy,
+        updated_date = updateDate
+    WHERE id = idPost;
+END //
+DELIMITER ;
+
+
 delimiter //
 create procedure get_post_by_id_of_admin(
     id long

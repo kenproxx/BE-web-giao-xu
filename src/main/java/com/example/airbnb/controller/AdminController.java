@@ -50,4 +50,13 @@ public class AdminController {
         postService.editPost(postEntity, username);
         return new ResponseEntity<>(postEntity, HttpStatus.OK);
     }
+
+    @GetMapping()
+    public ResponseEntity<PostEntity> getById(@RequestParam Long id) {
+        PostEntity postEntity = postService.getById(id, true);
+        if (postEntity == null) {
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(postEntity, HttpStatus.OK);
+    }
 }

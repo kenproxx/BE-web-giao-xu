@@ -22,8 +22,8 @@ public class LogController {
     private LogService logService;
 
     @GetMapping("/all")
-    public ResponseEntity<List> getAllLog(@RequestParam(required = false) Integer page) {
-        List list = logService.getAllLog(page);
+    public ResponseEntity<List> getAllLog(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer pageSize) {
+        List list = logService.getAllLog(page, pageSize);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 

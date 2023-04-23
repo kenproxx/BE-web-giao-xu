@@ -28,4 +28,7 @@ public class LogEntity {
         this.createdDate = now;
         this.createdBy = createdBy;
     }
+
+    public LogEntity() {
+    }
 }

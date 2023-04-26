@@ -102,8 +102,8 @@ CREATE PROCEDURE change_status_post(
 )
 BEGIN
     UPDATE post_entity
-    SET status = NOT status,
-        updated_by = updateBy,
+    SET status       = NOT status,
+        updated_by   = updateBy,
         updated_date = updateDate
     WHERE id = idPost;
 END //
@@ -155,4 +155,23 @@ begin
     WHERE rn between ((page - 1) * pageSize + 1) and (((page - 1) * pageSize) + pageSize);
 end //
 delimiter ;
+
+
+delimiter //
+CREATE PROCEDURE get_post_count(
+    is_admin bit
+)
+BEGIN
+    IF is_admin = 1 then
+        SELECT COUNT(*)
+        FROM post_entity;
+    ELSE
+        SELECT COUNT(*)
+        FROM post_entity
+        WHERE status = true;
+    END IF;
+End;
+//
+delimiter ;
+
 

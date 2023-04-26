@@ -17,12 +17,21 @@ public class PostController {
     private PostService postService;
 
     @GetMapping("/all")
-    public ResponseEntity<List> findAll(@RequestParam(required = false) Integer page) {
-        if (page == null) {
-            page = 1;
+    public ResponseEntity<List> findAll(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer pageSize) {
+        if (pageSize == null) {
+            pageSize = 6;
         }
-        List listPost = postService.getListPost(page, false);
+        List listPost = postService.getListPost(page, pageSize, false);
         return new ResponseEntity<>(listPost, HttpStatus.OK);
+    }
+
+    @GetMapping("/total")
+    public ResponseEntity<Integer> getTotalPost(@RequestParam(required = false) Boolean isAdmin) {
+        if (isAdmin == null) {
+            isAdmin = false;
+        }
+        Integer countPost = postService.getCountPost(isAdmin);
+        return new ResponseEntity<>(countPost, HttpStatus.OK);
     }
 
     @GetMapping("/newest")

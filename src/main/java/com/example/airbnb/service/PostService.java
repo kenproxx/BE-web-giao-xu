@@ -4,6 +4,7 @@ import com.example.airbnb.dto.PostDto;
 import com.example.airbnb.model.PostEntity;
 import com.example.airbnb.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -27,8 +28,13 @@ public class PostService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List getListPost(Integer page, boolean isAdmin) {
-        int pageSize = 6;
+    private final JdbcTemplate jdbcTemplate;
+
+    public PostService(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public List getListPost(Integer page,Integer pageSize, boolean isAdmin) {
         if (page == null) {
             page = 1;
         }
@@ -40,6 +46,11 @@ public class PostService {
         query.setParameter("pageSize", pageSize);
         query.execute();
         return query.getResultList();
+    }
+    public Integer getCountPost(boolean isAdmin) {
+        String sql = "{CALL get_post_count(?)}";
+        Object[] params = { isAdmin ? 1 : 0 };
+        return jdbcTemplate.queryForObject(sql, params, Integer.class);
     }
 
 

@@ -32,8 +32,11 @@ public class AdminController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List> getAllOfAdmin(@RequestParam(required = false) Integer page) {
-        List list = postService.getListPost(page, true);
+    public ResponseEntity<List> getAllOfAdmin(@RequestParam(required = false) Integer page,@RequestParam(required = false) Integer pageSize) {
+        if (pageSize == null) {
+            pageSize = 5;
+        }
+        List list = postService.getListPost(page, pageSize, true);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 

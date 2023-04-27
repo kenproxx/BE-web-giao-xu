@@ -156,24 +156,6 @@ begin
 end //
 delimiter ;
 
-
-delimiter //
-CREATE PROCEDURE get_post_count(
-    is_admin bit
-)
-BEGIN
-    IF is_admin = 1 then
-        SELECT COUNT(*)
-        FROM post_entity;
-    ELSE
-        SELECT COUNT(*)
-        FROM post_entity
-        WHERE status = true;
-    END IF;
-End;
-//
-delimiter ;
-
 drop procedure if exists get_post_info;
 delimiter //
 

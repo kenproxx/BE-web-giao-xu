@@ -60,13 +60,6 @@ public class PostService {
 
         return postPagingDtoList;
     }
-    public Integer getCountPost(boolean isAdmin) {
-        String sql = "{CALL get_post_count(?)}";
-        Object[] params = { isAdmin ? 1 : 0 };
-        return jdbcTemplate.queryForObject(sql, params, Integer.class);
-    }
-
-
 
     public void createPost(PostDto postDto, String createdBy) {
         PostEntity postEntity = new PostEntity();

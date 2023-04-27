@@ -170,6 +170,7 @@ begin
 
     SET beginPage = ((page - 1) * pageSize + 1);
     SET endPage = (((page - 1) * pageSize) + pageSize);
+
     if isAdmin = true then
         SELECT id,
                title,
@@ -208,66 +209,3 @@ begin
 end //
 
 delimiter ;
-
-
-
-DROP procedure if exists get_post_info_2;
-DELIMITER //
-
-CREATE PROCEDURE get_post_info_2(
-    IN page INT,
-    IN pageSize INT,
-    IN isAdmin BOOLEAN,
-    OUT totalPage INT
-)
-BEGIN
-    DECLARE beginPage INT;
-    DECLARE endPage INT;
-    DECLARE totalItem INT;
-
-    SET beginPage = ((page - 1) * pageSize + 1);
-    SET endPage = (((page - 1) * pageSize) + pageSize);
-
-    if isAdmin = true then
-        SELECT COUNT(*) INTO totalItem FROM post_entity;
-        SET totalPage = CEILING(totalItem / pageSize);
-
-        SELECT id,
-               title,
-               content,
-               status,
-               thumbnail_img,
-               created_by,
-               created_date,
-               updated_by,
-               updated_date,
-               total_item
-        FROM (SELECT *, ROW_NUMBER() OVER (ORDER BY created_date DESC) as rn, COUNT(*) OVER () as total_item
-              FROM post_entity) as subquery
-        WHERE rn between beginPage and endPage;
-    else
-        SELECT COUNT(*) INTO totalItem FROM post_entity WHERE status = true;
-        SET totalPage = CEILING(totalItem / pageSize);
-
-        SELECT id,
-               title,
-               content,
-               status,
-               thumbnail_img,
-               created_by,
-               created_date,
-               updated_by,
-               updated_date,
-               total_item
-        FROM (SELECT *,
-                     ROW_NUMBER() OVER (ORDER BY created_date DESC) as rn,
-                     COUNT(*) OVER (PARTITION BY status = true)     as total_item
-              FROM post_entity
-              WHERE status = true
-                AND created_date != (SELECT MAX(created_date) FROM post_entity WHERE status = true)) as subquery
-        WHERE rn between beginPage and endPage;
-    end if;
-END //
-
-DELIMITER ;
-

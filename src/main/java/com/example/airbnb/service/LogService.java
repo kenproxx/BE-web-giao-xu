@@ -1,18 +1,16 @@
 package com.example.airbnb.service;
 
 import com.example.airbnb.model.LogEntity;
-import com.example.airbnb.model.PostEntity;
 import com.example.airbnb.repository.LogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
-import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
-import javax.persistence.StoredProcedureQuery;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
 @Service
 public class LogService {
@@ -28,18 +26,16 @@ public class LogService {
         logRepository.save(logEntity);
     }
 
-    public List getAllLog(Integer page, Integer pageSize) {
+    public Page<LogEntity> getAllLog(Integer page, Integer pageSize) {
         if (page == null) {
-            page = 1;
+            page = 0;
+        } else {
+            page--;
         }
         if (pageSize == null) {
-            pageSize = 10;
+            pageSize = 5;
         }
-        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("get_all_log", LogEntity.class);
-        query.registerStoredProcedureParameter("page", Integer.class, ParameterMode.IN);
-        query.registerStoredProcedureParameter("pageSize", Integer.class, ParameterMode.IN);
-        query.setParameter("page", page);
-        query.setParameter("pageSize", pageSize);
-        query.execute();
-        return query.getResultList();
-    }}
+        PageRequest pageRequest = PageRequest.of(page, pageSize, Sort.by("createdDate").descending());
+        return logRepository.findAll(pageRequest);
+    }
+}

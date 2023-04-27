@@ -17,11 +17,13 @@ public class PostController {
     private PostService postService;
 
     @GetMapping("/all")
-    public ResponseEntity<List> findAll(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer pageSize) {
+    public ResponseEntity<List> findAll(@RequestParam(required = false) Integer page,
+                                        @RequestParam(required = false) Integer pageSize,
+                                        @RequestParam(required = false, defaultValue = "false") Boolean isAdmin) {
         if (pageSize == null) {
             pageSize = 6;
         }
-        List listPost = postService.getListPost(page, pageSize, false);
+        List listPost = postService.getListPost(page, pageSize, isAdmin);
         return new ResponseEntity<>(listPost, HttpStatus.OK);
     }
 

@@ -1,10 +1,15 @@
 package com.example.airbnb.service;
 
 import com.example.airbnb.dto.PostDto;
+import com.example.airbnb.dto.PostPagingDto;
 import com.example.airbnb.model.PostEntity;
 import com.example.airbnb.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -13,6 +18,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PostService {
@@ -30,6 +36,8 @@ public class PostService {
 
     private final JdbcTemplate jdbcTemplate;
 
+    SimpleJdbcCall jdbcCall;
+
     public PostService(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -38,14 +46,19 @@ public class PostService {
         if (page == null) {
             page = 1;
         }
-        String procedure = isAdmin ? "find_post_paging_admin" : "find_post_paging";
-        StoredProcedureQuery query = entityManager.createStoredProcedureQuery(procedure, PostEntity.class);
-        query.registerStoredProcedureParameter("page", Integer.class, ParameterMode.IN);
-        query.registerStoredProcedureParameter("pageSize", Integer.class, ParameterMode.IN);
-        query.setParameter("page", page);
-        query.setParameter("pageSize", pageSize);
-        query.execute();
-        return query.getResultList();
+        jdbcCall = new SimpleJdbcCall(jdbcTemplate)
+                .withProcedureName("get_post_info");
+
+        SqlParameterSource inParams = new MapSqlParameterSource()
+                .addValue("page", page)
+                .addValue("pageSize", pageSize)
+                .addValue("isAdmin", isAdmin);
+
+        Map<String, Object> outParams = jdbcCall.execute(inParams);
+
+        List<PostPagingDto> postPagingDtoList = (List<PostPagingDto>) outParams.get("#result-set-1");
+
+        return postPagingDtoList;
     }
     public Integer getCountPost(boolean isAdmin) {
         String sql = "{CALL get_post_count(?)}";
